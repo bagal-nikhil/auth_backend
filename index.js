@@ -4,7 +4,7 @@ const app =  express()
 app.use(express.json());
 
 app.get('/', (req, res) => {
-    res.send("working the applicajfoenrnftio eninfnn")
+    res.send("working the applicatio eninfnn")
 })
 const PORT = 3000;
 
