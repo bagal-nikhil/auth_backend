@@ -19,12 +19,10 @@ const createUser = async (params) => {
 
 const checkExistingUser = async (email) => {
     try {
-        console.log(email)
         const collname = await dbHelper.getCollection("users")
         const result = await collname.findOne({
             email
         });
-        console.log(JSON.stringify(result))
         return result; 
     } catch (error) {
         throw error
