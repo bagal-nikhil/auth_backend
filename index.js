@@ -1,10 +1,12 @@
 const express = require('express')
 const app = express()
 const login = require("./routes/login/handler")
+const signup = require("./routes/signup/handler")
 
 app.use(express.json());
 
 app.use("/login", login)
+app.use("/signup", signup)
 
 app.get('/', (req, res) => {
     res.send("working the applicatio eninfnn")
