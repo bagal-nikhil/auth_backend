@@ -1,17 +1,18 @@
 const express = require('express')
 const app = express()
-const login = require("./routes/login/handler")
-const signup = require("./routes/signup/handler")
+const login = require("./routes/login/handler.js")
+const signup = require("./routes/signup/handler.js")
+const db = require("./database/index.js")
+const PORT = 3000;
 
 app.use(express.json());
 
-app.use("/login", login)
-app.use("/signup", signup)
+app.use("/auth/signup", signup);
+app.use("/auth/login", login);
 
 app.get('/', (req, res) => {
     res.send("working the applicatio eninfnn")
 })
-const PORT = 3000;
 
 app.listen(PORT, () => {
     console.log(`listening on ${PORT}`)
