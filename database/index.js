@@ -20,3 +20,14 @@ mongoose.connect(dbURL)
         console.log("connected successfully")
     })
     .catch((error) => console.error('Error connecting to MongoDB:', error.message));
+
+
+const genericSchema = new mongoose.Schema({}, { strict: false });
+const getCollection = async (collectionName) => {
+    if (mongoose.models[collectionName]) {
+        return mongoose.models[collectionName];
+    }
+    return mongoose.model(collectionName, genericSchema, collectionName);
+};
+
+exports.getCollection = getCollection
