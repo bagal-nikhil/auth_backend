@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router()
 const signUp = require("./index")
+const helper = require("../../helper/helper")
 
 router.post('/checkExisting', (req, res) => {
     try {
@@ -15,18 +16,17 @@ router.post('/checkExisting', (req, res) => {
 router.post('/createUser', async (req, res) => {
     try {
         const params = Object.assign({}, req.body)
-        console.log(JSON.stringify(params))
         const isPresent = await signUp.checkExistingUser(params.email)
-        console.log(isPresent)
         if (isPresent) {
             return res.status(200).send({
                 success: false,
                 message: "User present"
             });
         }
+        const hashedPassword = await helper.hashPassword(params?.password, 10);
+        params.password = hashedPassword;
+        console.log(`params ${JSON.stringify(params)}`)
         const newUser = await signUp.createUser(params);
-        console.log(JSON.stringify(newUser));
-
         return res.status(200).send({
             success: true,
             data: newUser
