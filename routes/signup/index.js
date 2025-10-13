@@ -50,6 +50,32 @@ const sendOtpEmail = async (params) => {
         throw error
     }
 }
+
+const verifyEmail = async (params) => {
+    try {
+        const storeOtp = await dbHelper.getCollection("otps")
+        const result = await storeOtp.findOne({
+            email: params?.email,
+        });
+        if(result) {
+            console.log(`result is ${JSON.stringify(result)}`)
+            if(params?.otp === result?.otp) {
+                return {
+                    message: "Successfully verified your otp!"
+                }
+            }
+            else{
+                return {
+                    message: "please enter the correct otp!"
+                }
+            };
+        };
+    } catch (error) {
+        throw error
+    }
+}
+
 exports.createUser = createUser
 exports.checkExistingUser = checkExistingUser
 exports.sendOtpEmail = sendOtpEmail
+exports.verifyEmail = verifyEmail

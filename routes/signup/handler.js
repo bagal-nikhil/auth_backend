@@ -48,8 +48,16 @@ router.get("/emailVerify", async(req, res) => {
     try {
         const params = Object.assign({}, req.query);
         console.log(`params are ${JSON.stringify(params)}`)
+        const response = await signUp.verifyEmail(params)
+        return res.status(200).send({
+            success: true,
+            response
+        });
     } catch (error) {
-        throw error;
+        return res.status(401).send({
+            success: false,
+            message: error.message || "Please try again"
+        });
     }
 })
 
