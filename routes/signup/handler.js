@@ -29,7 +29,7 @@ router.post('/createUser', async (req, res) => {
                 success: false,
                 message: "User present"
             });
-        }
+        };
         const response = await signUp.sendOtpEmail(params)
         return res.status(200).send({
             success: true,
@@ -43,5 +43,14 @@ router.post('/createUser', async (req, res) => {
         });
     }
 });
+
+router.get("/emailVerify", async(req, res) => {
+    try {
+        const params = Object.assign({}, req.query);
+        console.log(`params are ${JSON.stringify(params)}`)
+    } catch (error) {
+        throw error;
+    }
+})
 
 module.exports = router
