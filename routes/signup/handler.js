@@ -5,6 +5,7 @@ const signUp = require("./index")
 const helper = require("../../helper/helper")
 const conf = require("../../conf/conf.json")
 const emailHelper = require("../../communication/emailHelper/emailHelper")
+const otp = require("../otp/index")
 
 router.post('/checkExisting', (req, res) => {
     try {
@@ -29,27 +30,7 @@ router.post('/createUser', async (req, res) => {
                 message: "User present"
             });
         }
-        const hashedPassword = await helper.hashPassword(params?.password, 10);
-        params.password = hashedPassword;
-        console.log(`params ${JSON.stringify(params)}`)
-        const user = await signUp.createUser(params);
-        const token = jwt.sign({ id: user._id }, conf.jwt_secret, { expiresIn: "1d" });
-        const otp = await helper.generateOTP()
-        const htmlContent = `
-  <div style="font-family: Arial, sans-serif; text-align: center;">
-    <h2>Welcome to MyApp!</h2>
-    <p>Use the OTP below to verify your email address:</p>
-    <h1 style="color: #4CAF50;">${otp}</h1>
-    <p>This OTP is valid for 10 minutes.</p>
-    <p>Or copy the OTP into your app.</p>
-  </div>
-`;
-        const sendEmailOtp = await emailHelper(
-            user,
-            "Otp - AmarNikhil Project Test Email",
-             htmlContent
-        );
-        console.log(`response of sendEmailOtp ${JSON.stringify(sendEmailOtp)}`)
+        const response = await signUp.sendOtpEmail(params)
         return res.status(200).send({
             success: true,
             data: user,

@@ -13,7 +13,7 @@ app.use(cors({
     credentials: true
 }))
 app.use(express.json());
-app.use(morgan("dev"))
+app.use(morgan("dev"));
 
 app.use("/auth/signup", signup);
 app.use("/auth/login", login);
@@ -24,4 +24,4 @@ app.get('/', (req, res) => {
 
 app.listen(PORT, () => {
     console.log(`listening on ${PORT}`)
-})
+});
