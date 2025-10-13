@@ -17,6 +17,7 @@ app.use(morgan("dev"));
 
 app.use("/auth/signup", signup);
 app.use("/auth/login", login);
+app.use("/auth/verify", signup)
 
 app.get('/', (req, res) => {
     res.send("working the applicatio eninfnn")

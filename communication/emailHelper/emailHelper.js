@@ -8,7 +8,6 @@ function renderTemplate(templateName, data = {}) {
   const filePath = path.join(__dirname, `../templates/${templateName}.hbs`);
   const source = fs.readFileSync(filePath, "utf-8");
   const compiledTemplate = hbs.compile(source);
-  console.log(`compiled data ${JSON.stringify(compiledTemplate(data))}`)
   return compiledTemplate(data);
 }
 
