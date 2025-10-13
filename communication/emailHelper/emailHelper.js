@@ -1,5 +1,16 @@
 const nodemailer = require("nodemailer");
 const conf = require("../../conf/conf.json")
+const path = require("path")
+const fs = require("fs")
+const hbs = require("hbs")
+
+function renderTemplate(templateName, data = {}) {
+  const filePath = path.join(__dirname, `../templates/${templateName}.hbs`);
+  const source = fs.readFileSync(filePath, "utf-8");
+  const compiledTemplate = hbs.compile(source);
+  console.log(`compiled data ${JSON.stringify(compiledTemplate(data))}`)
+  return compiledTemplate(data);
+}
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -9,12 +20,14 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-const sendEmail = async (to, subject, html) => {
+const sendEmail = async (to, subject, templateName, data) => {
+  console.log(templateName)
+  const htmlContent = renderTemplate(templateName, data);
   const mailOptions = {
     from: conf.email,
     to,
     subject,
-    html,
+    html: htmlContent,
   };
 
   try {
