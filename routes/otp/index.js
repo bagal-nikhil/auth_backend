@@ -11,13 +11,13 @@ const sendSignupOtp = async (params) => {
     const result = await storeOtp.findOneAndUpdate(
             params,
             { $set: params }, 
-            {
+            {   
             new: true,
             upsert: true,
         }
     );
     const sendEmailOtp = await sendEmail(
-        "nikhilbagalofficial@gmail.com",
+        params?.email,
         `${conf?.companyName} - Your email verification otp`,
         "otp",
         { 
