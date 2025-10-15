@@ -1,7 +1,6 @@
 const dbHelper = require("../../database/index")
 const helper =  require("../../helper/helper")
 const sendOtp = require("../otp/index")
-const signUp = require("./index")
 const jwt = require("jsonwebtoken")
 const conf = require("../../conf/conf.json")
 
@@ -39,13 +38,17 @@ const sendOtpEmail = async (params) => {
     try {
         const hashedPassword = await helper.hashPassword(params?.password, 10);
         params.password = hashedPassword;
-        const user = await signUp.createUser(params);
+        const user = await createUser(params);
         const token = jwt.sign({ id: user._id }, conf.jwt_secret, { expiresIn: "1d" });
-        console.log(`params ${JSON.stringify(params.name)}`)
         const generatedOtp = await sendOtp.sendSignupOtp({
             email: params?.email,
             name: params?.name
         })
+        return {
+            name: user.name,
+            token: token,
+            email: user?.token
+        }
     } catch (error) {
         throw error
     }

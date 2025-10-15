@@ -28,15 +28,14 @@ router.post('/createUser', async (req, res) => {
         if (isPresent) {
             return res.status(200).send({
                 success: false,
-                message: "User present"
+                message: "User already signed up!"
             });
         };
         const response = await signUp.sendOtpEmail(params)
         return res.status(200).send({
             success: true,
-            data: user,
-            token,
-            message: "User has successfully signed up!"
+            data: response,
+            message: "Otp has been send successfully!"
         });
     } catch (error) {
         return res.status(401).send({

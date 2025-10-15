@@ -9,7 +9,6 @@ router.post("/", async(req, res) => {
     try {
         const params = Object.assign({}, req.body)
         const user = await login.checkUserPresent(params.email)
-        console.log(`user is ${JSON.stringify(user)}`)
         const becryptedPassword = await becrypt.compare(params.password, user.password)
         if(becryptedPassword) {
             const token = jwt.sign({ id: user._id }, conf.jwt_secret, { expiresIn: "1d" });
