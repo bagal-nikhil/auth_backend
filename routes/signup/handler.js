@@ -6,6 +6,7 @@ const helper = require("../../helper/helper")
 const conf = require("../../conf/conf.json")
 const emailHelper = require("../../communication/emailHelper/emailHelper")
 const otp = require("../otp/index")
+const welcomeEmailHelper = require("../../communication/userCommunication")
 
 router.post('/checkExisting', (req, res) => {
     try {
@@ -34,7 +35,8 @@ router.post('/createUser', async (req, res) => {
         return res.status(200).send({
             success: true,
             data: user,
-            token
+            token,
+            message: "User has successfully signed up!"
         });
     } catch (error) {
         return res.status(401).send({
@@ -49,6 +51,9 @@ router.get("/emailVerify", async(req, res) => {
         const params = Object.assign({}, req.query);
         console.log(`params are ${JSON.stringify(params)}`)
         const response = await signUp.verifyEmail(params)
+        if(response?.code === "1") {
+            const sendWelcomeEmail = await welcomeEmailHelper.sendWelcomeEmail(params)
+        }
         return res.status(200).send({
             success: true,
             response

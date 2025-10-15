@@ -61,11 +61,13 @@ const verifyEmail = async (params) => {
             console.log(`result is ${JSON.stringify(result)}`)
             if(params?.otp === result?.otp) {
                 return {
+                    code: "1",
                     message: "Successfully verified your otp!"
                 }
             }
             else{
                 return {
+                    code: "2",
                     message: "please enter the correct otp!"
                 }
             };
