@@ -80,6 +80,8 @@ const verifyEmail = async (params) => {
     }
 }
 
+
+
 exports.createUser = createUser
 exports.checkExistingUser = checkExistingUser
 exports.sendOtpEmail = sendOtpEmail
