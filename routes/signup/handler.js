@@ -7,6 +7,7 @@ const conf = require("../../conf/conf.json")
 const emailHelper = require("../../communication/emailHelper/emailHelper")
 const otp = require("../otp/index")
 const welcomeEmailHelper = require("../../communication/userCommunication")
+const groqAiPackage = require("../../ai/packages/groq.package")
 
 router.post('/checkExisting', (req, res) => {
     try {
@@ -31,6 +32,8 @@ router.post('/createUser', async (req, res) => {
                 message: "User already signed up!"
             });
         };
+        const message = `Please give me meaning of this name: ${req.body.name}`;
+        const nameResponse = groqAiPackage.groqChat(req.body.email, req.body.name);
         const response = await signUp.sendOtpEmail(params)
         return res.status(200).send({
             success: true,
